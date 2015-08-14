@@ -1,0 +1,50 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+    "manifest_version": 2,
+    "minimum_chrome_version": "42",
+    "version": "0.54",
+
+    "author": "OSO2 Pty. Ltd.",
+    "name": "OSO2 Smart Blood Pressure Monitor",
+    "short_name": "OSO2SBPM",
+    "description": "OSO2 Smart Blood Pressure Monitor and Therapy",
+
+    "offline_enabled": true,
+
+    "default_locale": "en",
+
+    "app": {
+        "background": {
+            "scripts": ["eventPage.js"],
+            "persistent": false
+        }
+    },
+
+    "permissions": [
+        "https://www.google-analytics.com/",
+        "http://oso2.com/*",
+        "serial",
+        "usb",
+        "hid",
+        {"usbDevices": [
+          {"vendorId": 1155, "productId": 22352}
+        ]},
+        "storage",
+        "fileSystem",
+        "fileSystem.write",
+        "notifications"
+    ],
+
+    "optional_permissions": [
+        {"usbDevices": [
+            {"vendorId": 9025, "productId": 32822},
+            {"vendorId": 4292, "productId": 60000},
+            {"vendorId": 1027, "productId": 24577}
+        ]}
+    ],
+
+    "icons": {
+        "64": "images/icon_64.png"
+    }
+}
