@@ -15,7 +15,7 @@ function GUI_control() {
     this.module = false;
     this.operating_mode = 0;
     this.connect_lock = false;
-    this.tab_lock_default_state = [1, 0, 1, 1, 1, 0, 0]; // needs to match tab count
+    this.tab_lock_default_state = [0, 0, 1, 1, 1, 0]; // needs to match tab count
     this.tab_lock = [];
     this.active_tab;
     this.operating_system;
@@ -268,7 +268,8 @@ GUI_control.prototype.log = function(message) {
     var time = ((d.getHours() < 10) ? '0' + d.getHours(): d.getHours())
         + ':' + ((d.getMinutes() < 10) ? '0' + d.getMinutes(): d.getMinutes())
         + ':' + ((d.getSeconds() < 10) ? '0' + d.getSeconds(): d.getSeconds());
-
+    
+    /*var time = d.toLocaleString();*/
     $('div.wrapper', command_log).append('<p>' + time + ' -- ' + message + '</p>');
     command_log.scrollTop($('div.wrapper', command_log).height());
 };

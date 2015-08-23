@@ -3,7 +3,7 @@
 
     "manifest_version": 2,
     "minimum_chrome_version": "42",
-    "version": "0.54",
+    "version": "0.56",
 
     "author": "OSO2 Pty. Ltd.",
     "name": "OSO2 Smart Blood Pressure Monitor",
@@ -23,7 +23,9 @@
 
     "permissions": [
         "https://www.google-analytics.com/",
-        "http://oso2.com/*",
+        "http://*.oso2.com/",
+        "http://*.oso2.com.au/",
+        "webview",
         "serial",
         "usb",
         "hid",
@@ -34,14 +36,6 @@
         "fileSystem",
         "fileSystem.write",
         "notifications"
-    ],
-
-    "optional_permissions": [
-        {"usbDevices": [
-            {"vendorId": 9025, "productId": 32822},
-            {"vendorId": 4292, "productId": 60000},
-            {"vendorId": 1027, "productId": 24577}
-        ]}
     ],
 
     "icons": {

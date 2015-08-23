@@ -7,7 +7,7 @@ function tab_initialize_default(callback) {
             googleAnalytics.sendAppView('Default Page');
         }
 
-        check_usb_permissions();
+        //check_usb_permissions();
 
         // translate to user-selected language
         localize();

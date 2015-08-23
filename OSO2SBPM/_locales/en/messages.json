@@ -60,6 +60,22 @@
         "message": "Therapy",
         "description": "Tab name"
     },
+    "tab_solution": {
+        "message": "Solution",
+        "description": "Tab name"
+    },
+    "tab_patient": {
+        "message": "Patients",
+        "description": "Tab name"
+    },
+    "tab_patients_monitor": {
+        "message": "Monitor",
+        "description": "Tab name"
+    },
+    "tab_analyzer": {
+        "message": "Data Analyzer",
+        "description": "Tab name"
+    },
     "tab_TX": {
         "message": "TX Module",
         "description": "Tab name"
@@ -86,7 +102,7 @@
     },
 
     "startup_info_message": {
-        "message": "Running - OS: <strong>$1</strong>, Chrome: <strong>$2</strong>, Configurator: <strong>$3</strong>",
+        "message": "Running - OS: <strong>$1</strong>, Chrome: <strong>$2</strong>, Software version: <strong>$3</strong>",
         "description": "Info message printed on configurator startup running (Operating system, chrome version, configurator version)"
     },
 

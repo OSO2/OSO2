@@ -14,27 +14,28 @@ function arrayBufferToString(array) {
     return String.fromCharCode.apply(null, new Uint8Array(array));
 }
 var hidStart = function(){
+  mHidReportNum = 0;
     if(mHidDeviceId){
-        mHidReportNum = 0;
+        
         chrome.hid.connect(
             mHidDeviceId,
             function(connection){
                 mHidConnectionId = connection.connectionId;
                 if(mHidConnectionId){
                     console.log('HID connectionId: ' + mHidConnectionId);
-                    //myDevicePoll();
-                    sendCommand(1);
-                    //myDevicePoll();
+                    sendCommand();
                 }
         });
     }else{
         console.log('HID start timeout! -> device is booting OK');
+        //$("#tl-righthand").attr("checked", true);
+        //OSO.testSend();
     }
 }
 var sendCommand = function(command){
     var bytes = new Uint8Array(64);
     var command1 = 0x81;
-    if(command==2) command1 = 0x82;
+    if(command) command1 = command;
     bytes[0] = command1;
     for (var i = 1; i < 64; ++i) {
       bytes[i] = 0x00;
@@ -45,22 +46,32 @@ var sendCommand = function(command){
     });
 }
 var myDevicePoll = function() {
-    var size = 64;
+    var mdata;
     var value;
+    var i;
     if(mHidConnectionId){
         chrome.hid.receive(mHidConnectionId,function(reportId,data) {
             if (data != null) {
                 // Convert Byte into Ascii to follow the format of our device
-                size = data.lenght;
+                mdata = new Uint8Array(data);
                 value = arrayBufferToString(data);
                 mHidReportNum++;
                 console.log('Seq: '+ mHidReportNum +', Data: ' + value);
 
-                if((mHidReportNum > 1)&&(mHidReportNum <= MAX_HID_REPORT_NUM)){
-                    setTimeout(myDevicePoll, 0);
+                if((mHidReportNum > 1)&&(mHidReportNum <= MAX_HID_REPORT_NUM+1)){
+                    for(i = 0;i<data.byteLength;i++){
+                        OSO.HID_Buffer[OSO.HID_Counter +i] = mdata[i];
+                    }
+                    OSO.HID_Counter += i;
+                    if(mHidReportNum <= MAX_HID_REPORT_NUM){
+                        setTimeout(myDevicePoll, 0);
+                    }
                 }else if((mHidReportNum == 1) && (value.indexOf("12345") == 1)){
-                    sendCommand(2);//send the second command
-
+                    sendCommand(0x82);//send the second command
+                    OSO.HID_Counter = 0;
+                    OSO.isStart = true;
+                }else {
+                //    sendCommand(40);
                 }
             }
         });
@@ -72,6 +83,16 @@ var resetDevice = function(mdeviceId){
     }
     mHidDeviceId = null;
     mHidConnectionId = null;
+    if(mHidReportNum == MAX_HID_REPORT_NUM +1){
+        OSO.HID_proccessData();
+        if(document.getElementById("tl-lefthand").checked == true){
+          document.getElementById("tl-lefthand").checked = false;
+          document.getElementById("tl-righthand").checked = true;
+        }else{
+          document.getElementById("tl-righthand").checked = false;
+          document.getElementById("tl-lefthand").checked = true
+        }
+    }   
 }
 
 var usbPermissions = {permissions: [{'usbDevices': [usbDevices.atmega32u4, usbDevices.cp2102, usbDevices.ftdi]}]};

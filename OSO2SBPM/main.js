@@ -20,9 +20,12 @@ window.onerror = function (errorMessage, url, lineNumber, columnNumber) {
 $(document).ready(function () {
     // translate to user-selected language
     localize();
-
+    $('#tl-version').text(OSO.version);
+    $('#tl-serial').text(OSO.serialNumber);
+    
     // alternative - window.navigator.appVersion.match(/Chrome\/([0-9.]*)/)[1];
     GUI.log(chrome.i18n.getMessage('startup_info_message', [GUI.operating_system, window.navigator.appVersion.replace(/.*Chrome\/([0-9.]*).*/, "$1"), chrome.runtime.getManifest().version]));
+    //OSO.testSend();
 
     // check release time to inform people in case they are running old release
     if (CONFIGURATOR.releaseDate > (new Date().getTime() - (86400000 * 90))) { // 1 day = 86400000 miliseconds, * 90 = 3 months window
@@ -61,20 +64,20 @@ $(document).ready(function () {
                     $('#content').empty();
 
                     switch (tab) {
-                        case 'tab_TX':
-                            tab_initialize_tx_module();
+                        case 'tab_therapy':
+                            tab_initialize_therapy_module();
                             break;
-                        case 'tab_RX':
-                            tab_initialize_rx_module();
+                        case 'tab_solution':
+                            tab_initialize_solution_module();
                             break;
-                        case 'tab_signal_monitor':
-                            tab_initialize_signal_monitor();
+                        case 'tab_patient':
+                            tab_initialize_patient_module();
                             break;
-                        case 'tab_spectrum_analyzer':
-                            tab_initialize_spectrum_analyzer();
+                        case 'tab_monitor':
+                            tab_initialize_monitor();
                             break;
-                        case 'tab_troubleshooting':
-                            tab_initialize_troubleshooting((!GUI.module) ? true : false);
+                        case 'tab_analyzer':
+                            tab_initialize_analyzer();
                             break;
                         case 'tab_about':
                             tab_initialize_about((!GUI.module) ? true : false);
@@ -94,8 +97,8 @@ $(document).ready(function () {
             }
         }
     });
-
-    tab_initialize_default();
+    tab_initialize_therapy_module();
+    //tab_initialize_default();
 
     // options
     $('a#options').click(function () {
@@ -161,6 +164,7 @@ $(document).ready(function () {
             });
         }
     });
+    
     chrome.hid.onDeviceAdded.addListener(
         function(device){
             mHidDeviceId = device.deviceId;
